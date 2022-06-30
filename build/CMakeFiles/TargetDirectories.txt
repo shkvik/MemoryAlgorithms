@@ -1,4 +1,0 @@
-C:/Users/pendulum/Desktop/Cmake/build/CMakeFiles/Main.dir
-C:/Users/pendulum/Desktop/Cmake/build/CMakeFiles/Allocator.dir
-C:/Users/pendulum/Desktop/Cmake/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/pendulum/Desktop/Cmake/build/CMakeFiles/ZERO_CHECK.dir
