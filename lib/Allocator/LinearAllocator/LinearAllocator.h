@@ -9,8 +9,8 @@ public:
 	
 		
 	explicit LinearAllocator(int count) noexcept;
-	explicit LinearAllocator(const LinearAllocator& other) noexcept;
 
+	LinearAllocator(const LinearAllocator<Type>& other) noexcept;
 
 	/* IAllocator Interface Access */
 	void PushOne(Type type) override final;
@@ -20,7 +20,9 @@ public:
 
 	/* LinearAllocator methods */
 	void PushOne(Type* type);
+
 	void ShowAllElements() const;
+
 
 	Type* ReturnUsedElement();
 	Type* ReturnStartElement();
@@ -30,14 +32,15 @@ public:
 	~LinearAllocator();
 
 	
-
+	Type* Area = nullptr;
+	int AllocateCount = 0;
 
 private:
 
 	int Count;
-	int AllocateCount = 0;
+	
 
-	Type* Area = nullptr;
+	
 	Type* Start = nullptr;
 	Type* End = nullptr;
 	Type* Used = nullptr;

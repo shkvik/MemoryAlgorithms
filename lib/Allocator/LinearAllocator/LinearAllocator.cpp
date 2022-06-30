@@ -12,27 +12,29 @@ LinearAllocator<Type>::LinearAllocator(int count) noexcept : Count(count), Area(
 }
 
 template<typename Type>
-LinearAllocator<Type>::LinearAllocator(const LinearAllocator& other) noexcept {
+LinearAllocator<Type>::LinearAllocator(const LinearAllocator<Type>& other) noexcept {
 	if (other.AllocateCount)
-	{
+	{	
+		this->LinearAllocator<Type>::Count = other.Count;
 		this->LinearAllocator<Type>::Area = new Type[other.Count];
 		this->LinearAllocator<Type>::AllocateCount = other.AllocateCount;
 
-		for (int i : other.Count) {
+		for (int i = 0; i < other.Count;i++) {
 			this->LinearAllocator<Type>::Area[i] = other.Area[i];
 		}
 	}
+
 }
 
 template<typename Type>
 LinearAllocator<Type>& LinearAllocator<Type>::operator = (LinearAllocator<Type> other) {
+
 	std::swap(this->LinearAllocator<Type>::Area, other.Area);
 	std::swap(this->LinearAllocator<Type>::AllocateCount, other.AllocateCount);
+	std::swap(this->LinearAllocator<Type>::Count, other.Count);
 
-	for (int i : other.Count) {
-		this->LinearAllocator<Type>::Area[i] = other.Area[i];
-	}
-
+	for (int i = 0; i < other.Count; i++) { this->LinearAllocator<Type>::Area[i] = other.Area[i]; }
+		
 	return *this;
 }
 
@@ -99,10 +101,10 @@ void LinearAllocator<Type>::ClearLastOne() {
 
 template<typename Type>
 void LinearAllocator<Type>::ClearAll() {
-	/*for (int i = AllocateCount; i > -1; i--) {
-		this->Area[i] = 0;
-		AllocateCount--;
-	}*/
+	delete[] this->LinearAllocator<Type>::Area;
+	this->LinearAllocator<Type>::Area = nullptr;
+	this->LinearAllocator<Type>::Area = new Type[this->LinearAllocator<Type>::AllocateCount];
+	this->LinearAllocator<Type>::Used = this->LinearAllocator<Type>::Area;
 }
 
 
