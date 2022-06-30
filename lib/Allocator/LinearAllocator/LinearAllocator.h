@@ -9,6 +9,8 @@ public:
 	
 		
 	explicit LinearAllocator(int count) noexcept;
+	explicit LinearAllocator(const LinearAllocator& other) noexcept;
+
 
 	/* IAllocator Interface Access */
 	void PushOne(Type type) override final;
@@ -22,10 +24,12 @@ public:
 
 	Type* ReturnUsedElement();
 	Type* ReturnStartElement();
-
+	
+	LinearAllocator<Type>& operator = (LinearAllocator<Type> other);
 
 	~LinearAllocator();
 
+	
 
 
 private:

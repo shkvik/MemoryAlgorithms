@@ -6,22 +6,48 @@
 
 template<typename Type>
 
-LinearAllocator<Type>::LinearAllocator(int count) noexcept : Count(count), Area(new Type[count]),
-Used(Area), Start(Area)
+LinearAllocator<Type>::LinearAllocator(int count) noexcept : Count(count), Area(new Type[count]), Used(Area), Start(Area)
 {
 	static_assert(!std::is_same<Type, void*>::value, "Type can't be a void*");
 }
 
+template<typename Type>
+LinearAllocator<Type>::LinearAllocator(const LinearAllocator& other) noexcept {
+	if (other.AllocateCount)
+	{
+		this->LinearAllocator<Type>::Area = new Type[other.Count];
+		this->LinearAllocator<Type>::AllocateCount = other.AllocateCount;
 
+		for (int i : other.Count) {
+			this->LinearAllocator<Type>::Area[i] = other.Area[i];
+		}
+	}
+}
+
+template<typename Type>
+LinearAllocator<Type>& LinearAllocator<Type>::operator = (LinearAllocator<Type> other) {
+	std::swap(this->LinearAllocator<Type>::Area, other.Area);
+	std::swap(this->LinearAllocator<Type>::AllocateCount, other.AllocateCount);
+
+	for (int i : other.Count) {
+		this->LinearAllocator<Type>::Area[i] = other.Area[i];
+	}
+
+	return *this;
+}
 
 
 template<typename Type>
 void LinearAllocator<Type>::PushOne(Type type) {
-	if (AllocateCount < this->Count) {
-		Used->~Type();
-		Area[AllocateCount] = type;
-		AllocateCount++;
-		if (AllocateCount != this->Count) this->Used = this->Used + 1;
+
+	if (LinearAllocator<Type>::AllocateCount < this->LinearAllocator<Type>::Count) {
+
+		this->LinearAllocator<Type>::Used->~Type();
+		this->LinearAllocator<Type>::Area[LinearAllocator<Type>::AllocateCount] = type;
+		this->LinearAllocator<Type>::AllocateCount++;
+
+		if (AllocateCount != this->Count) 
+			this->LinearAllocator<Type>::Used = this->LinearAllocator<Type>::Used + 1;
 	}
 	else { throw std::runtime_error("I haven't place more");}
 }
@@ -30,11 +56,14 @@ void LinearAllocator<Type>::PushOne(Type type) {
 
 template<typename Type>
 void LinearAllocator<Type>::PushOne(Type* type) {
-	if (AllocateCount < this->Count) {
-		Used->~Type();
-		Area[AllocateCount] = *(type);
-		AllocateCount++;
-		if (AllocateCount != this->Count) this->Used = this->Used + 1;
+	if (LinearAllocator<Type>::AllocateCount < this->LinearAllocator<Type>::Count) {
+
+		this->LinearAllocator<Type>::Used->~Type();
+		this->LinearAllocator<Type>::Area[LinearAllocator<Type>::AllocateCount] = *(type);
+		this->LinearAllocator<Type>::AllocateCount++;
+
+		if (AllocateCount != this->Count) 
+			this->LinearAllocator<Type>::Used = this->LinearAllocator<Type>::Used + 1;
 	}
 	else { throw std::runtime_error("I haven't place more"); }
 }
@@ -43,10 +72,13 @@ void LinearAllocator<Type>::PushOne(Type* type) {
 template<typename Type>
 void LinearAllocator<Type>::PushArray(Type* type, size_t count) {
 
-	if (count <= (this->Count - this->AllocateCount)) {
+	if (count <= (this->LinearAllocator<Type>::Count - this->LinearAllocator<Type>::AllocateCount)) {
 		for (int i = 0; i < count; i++) {
-			this->Area[AllocateCount] = *(type); type++; AllocateCount++;
-			if (AllocateCount != this->Count) this->Used += 1;
+			this->LinearAllocator<Type>::Area[LinearAllocator<Type>::AllocateCount] = *(type);
+			type++; LinearAllocator<Type>::AllocateCount++;
+			
+			if (LinearAllocator<Type>::AllocateCount != this->LinearAllocator<Type>::Count) 
+				this->LinearAllocator<Type>::Used += 1;
 		}
 	}
 }
@@ -76,13 +108,13 @@ void LinearAllocator<Type>::ClearAll() {
 
 template<typename Type>
 LinearAllocator<Type>::~LinearAllocator() {
-	delete[] this->Area;
+	delete[] this->LinearAllocator<Type>::Area;
 }
 
 
 template<typename Type>
 Type* LinearAllocator<Type>::ReturnStartElement() {
-	return this->Start;
+	return this->LinearAllocator<Type>::Start;
 }
 
 
@@ -90,13 +122,13 @@ template<typename Type>
 void LinearAllocator<Type>::ShowAllElements() const {
 
 	bool flag = ValidatePrintableType(*(Area));
-#if flag
+	#if flag
 	int countBuffer = LinearAllocator<Type>::Count;
 
 	while (countBuffer--) {
 		std::cout << LinearAllocator<Type>::Area[countBuffer] << " \n";
 	}
-#endif
+	#endif
 }
 
 
@@ -119,3 +151,5 @@ bool LinearAllocator<Type>::ValidatePrintableType(Type& type) const {
 
 	return controllVal > 0 ? true : false;
 }
+
+
