@@ -1,4 +1,4 @@
-#include "include.h"
+#include <include.h>
 
 using namespace std;
 
@@ -45,6 +45,8 @@ int main(){
 	
 	linear.PushOne(ForTest(5));
 	linear.PushOne(ForTest(6));
+
+	linear.ShowAllElements();
 
 	std::cout << "Hello World";
 	return 0;
