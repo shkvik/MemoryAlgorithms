@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.2)
+
+project(MemoryAlgorithms)
+
+link_directories(
+${CMAKE_SOURCE_DIR}/src
+${CMAKE_SOURCE_DIR}/lib
+${CMAKE_SOURCE_DIR}/test
+)
+
+add_executable(Main ${CMAKE_SOURCE_DIR}/src/main.cpp)
+
+
+add_library(Allocator
+${CMAKE_SOURCE_DIR}/lib/Allocator/IAllocator.h
+${CMAKE_SOURCE_DIR}/lib/Allocator/LinearAllocator/LinearAllocator.cpp
+${CMAKE_SOURCE_DIR}/lib/Allocator/LinearAllocator/LinearAllocator.h
+)
+
+include_directories(${CMAKE_SOURCE_DIR}/include)
+
+target_link_libraries(Main PRIVATE Allocator)
