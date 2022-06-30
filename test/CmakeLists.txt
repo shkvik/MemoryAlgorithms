@@ -1,4 +1,13 @@
-cmake_minimum_required(VERSION 3.2)
+set(BINARY ${CMAKE_PROJECT_NAME}_tst)
 
-ADD_EXECUTABLE(AllocatorTest AllocatorTest.cpp )
-ADD_TEST(AllocatorTest AllocatorTest)
+set(SOURCES ${TEST_SOURCES})
+
+set(SOURCES ${TEST_SOURCES})
+
+add_executable(${BINARY} ${TEST_SOURCES})
+
+add_test(NAME ${BINARY} COMMAND ${BINARY})
+
+target_link_libraries(${BINARY} PUBLIC ${CMAKE_PROJECT_NAME}_lib gtest)
+
+gtest_add_tests(${CMAKE_PROJECT_NAME}_tst AUTO)
