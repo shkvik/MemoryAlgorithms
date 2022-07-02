@@ -44,25 +44,26 @@ void LinearAllocator<Type>::PushOne(Type type) {
 
 	if (LinearAllocator<Type>::AllocateCount < this->LinearAllocator<Type>::Count) {
 
-		this->LinearAllocator<Type>::Used->~Type();
-		this->LinearAllocator<Type>::Area[LinearAllocator<Type>::AllocateCount] = type;
-		this->LinearAllocator<Type>::AllocateCount++;
+		*LinearAllocator<Type>::Used = type;
+		 LinearAllocator<Type>::AllocateCount++;
 
 		if (AllocateCount != this->Count) 
 			this->LinearAllocator<Type>::Used = this->LinearAllocator<Type>::Used + 1;
 	}
-	else { throw std::runtime_error("I haven't place more");}
+	else { 
+		throw std::runtime_error("I haven't place more");
+	}
 }
 
 
 
 template<typename Type>
 void LinearAllocator<Type>::PushOne(Type* type) {
+
 	if (LinearAllocator<Type>::AllocateCount < this->LinearAllocator<Type>::Count) {
 
-		this->LinearAllocator<Type>::Used->~Type();
-		this->LinearAllocator<Type>::Area[LinearAllocator<Type>::AllocateCount] = *(type);
-		this->LinearAllocator<Type>::AllocateCount++;
+		*LinearAllocator<Type>::Used = *(type);
+		LinearAllocator<Type>::AllocateCount++;
 
 		if (AllocateCount != this->Count) 
 			this->LinearAllocator<Type>::Used = this->LinearAllocator<Type>::Used + 1;
@@ -94,17 +95,24 @@ Type * LinearAllocator<Type>::ReturnUsedElement() {
 
 template<typename Type>
 void LinearAllocator<Type>::ClearLastOne() {
-	Used->~Type();
-	AllocateCount--;
+
+	 LinearAllocator<Type>::Used->~Type();
+	*LinearAllocator<Type>::Used = Type();
+	 LinearAllocator<Type>::Used--;
+	 LinearAllocator<Type>::AllocateCount--;
+
 }
 
 
 template<typename Type>
 void LinearAllocator<Type>::ClearAll() {
+
 	delete[] this->LinearAllocator<Type>::Area;
 	this->LinearAllocator<Type>::Area = nullptr;
-	this->LinearAllocator<Type>::Area = new Type[this->LinearAllocator<Type>::AllocateCount];
+	this->LinearAllocator<Type>::Area = new Type[this->LinearAllocator<Type>::Count];
 	this->LinearAllocator<Type>::Used = this->LinearAllocator<Type>::Area;
+
+	this->LinearAllocator<Type>::AllocateCount = 0;
 }
 
 

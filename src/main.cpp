@@ -6,23 +6,44 @@ class ForTest {
 public:
 
 
+	ForTest(const ForTest& other) {
+
+		std::cout << "Call copy Constructor" << hisNumber << " \n";
+
+		CopyFlag = true;
+
+		if (other.Array)       { this->Array = new int(*other.Array); }
+		if (other.Changeable)  { this->Changeable = other.Changeable; }
+		if (other.hisNumber)   { this->hisNumber = other.hisNumber; }
+	}
+
 	ForTest() {
-		Number++;
-		hisNumber = Number;
+
 		std::cout << "Call Constructor" << hisNumber << " \n";
-		this->Array = new int[10]{ 0 };
+		this->Array = new int[10];
 
 		for (int i = 0; i < 9; i++) {
 			Array[i] = i;
 		}
+
 	}
 
 	ForTest(int check) : hisNumber(check) {
+		this->Array = new int[10];
+
+		for (int i = 0; i < 9; i++) {
+			Array[i] = i;
+		}
 		std::cout << "Call Constructor" << hisNumber << " \n";
 	}
 	~ForTest() {
 		delete[] Array;
-		std::cout << "Call Destructor: " << hisNumber << " \n";
+		if (CopyFlag) {
+			std::cout << "Call Copy Destructor: " << hisNumber << " \n";
+		}
+		else {
+			std::cout << "Call Destructor: " << hisNumber << " \n";
+		}
 	}
 
 	void ShowMyElem() {
@@ -35,41 +56,47 @@ public:
 	int Changeable;
 	int hisNumber = 0;
 
-	static uint64_t Number;
+
+	ForTest& operator = (const ForTest other) {
+		if (other.Array)      { this->Array = new int(*other.Array); }
+		if (other.Changeable) { this->Changeable = other.Changeable; }
+		if (other.hisNumber)  { this->hisNumber = other.hisNumber;   }
+		return *this;
+	};
+
+
+	bool CopyFlag = false;
 };
 
-uint64_t ForTest::Number = 0;
+
 
 int main(){
+
 	LinearAllocator<ForTest> linear(4);
-	LinearAllocator<ForTest> add(linear);
-
-	add = linear;
-
-	linear.PushOne(ForTest(5));
-	linear.PushOne(ForTest(6));
-
-	linear.ShowAllElements();
-
 	
-
+	linear.PushOne(ForTest(5));
+	
+	linear.PushOne(ForTest(6));
+	linear.ShowAllElements();
 	linear.ClearAll();
 
-	
-
 	std::cout << "Hello World";
-
+	
 	for (int i = 0; i < 4; i++) {
 		std::cout << linear.Area[i].hisNumber << "\n";
 	}
-
+	
 	std::cout << linear.AllocateCount << "\n";
-	std::cout << (linear.ReturnUsedElement() - 2)->hisNumber;
+	std::cout << linear.ReturnUsedElement()->hisNumber;
 
 	linear.PushOne(ForTest(5));
 	linear.PushOne(ForTest(6));
 
+	linear.ClearLastOne();
 
+	SmartPointer<ForTest> empty_obj(new ForTest());
+	SmartPointer<ForTest> two_obj(new ForTest(2));
 
+	
 	return 0;
 }

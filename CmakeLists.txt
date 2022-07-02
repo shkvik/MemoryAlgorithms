@@ -10,17 +10,11 @@ ${CMAKE_SOURCE_DIR}/test
 
 add_executable(Main ${CMAKE_SOURCE_DIR}/src/main.cpp)
 
-
 add_executable(Test ${CMAKE_SOURCE_DIR}/test/AllocatorTest.cpp)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
 enable_testing()
-
-add_test(
-NAME Test
-COMMAND Test
-)
 
 
 add_library(Allocator
@@ -29,4 +23,8 @@ ${CMAKE_SOURCE_DIR}/lib/Allocator/LinearAllocator/LinearAllocator.cpp
 ${CMAKE_SOURCE_DIR}/lib/Allocator/LinearAllocator/LinearAllocator.h
 )
 
-
+add_library(SmartPointer
+${CMAKE_SOURCE_DIR}/lib/SmartPointer/ISmartPointer.h
+${CMAKE_SOURCE_DIR}/lib/SmartPointer/SmartPointer/SmartPointer.cpp
+${CMAKE_SOURCE_DIR}/lib/SmartPointer/SmartPointer/SmartPointer.h
+)
