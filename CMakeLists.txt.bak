@@ -30,9 +30,9 @@ ${CMAKE_SOURCE_DIR}/lib/SmartPointer/ISmartPointer.h
 ${CMAKE_SOURCE_DIR}/lib/SmartPointer/ScopedPointer/ScopedPointer.cpp
 ${CMAKE_SOURCE_DIR}/lib/SmartPointer/ScopedPointer/ScopedPointer.h
 
-${CMAKE_SOURCE_DIR}/lib/SmartPointer/AutoPointer/AutoPointer.cpp
-${CMAKE_SOURCE_DIR}/lib/SmartPointer/AutoPointer/AutoPointer.h
+${CMAKE_SOURCE_DIR}/lib/SmartPointer/ScopedPointer/AutoPointer.cpp
+${CMAKE_SOURCE_DIR}/lib/SmartPointer/ScopedPointer/AutoPointer.h
 
-${CMAKE_SOURCE_DIR}/lib/SmartPointer/SharedPointer/SharedPointer.cpp
-${CMAKE_SOURCE_DIR}/lib/SmartPointer/SharedPointer/SharedPointer.h
+${CMAKE_SOURCE_DIR}/lib/SmartPointer/ScopedPointer/SharedPointer.cpp
+${CMAKE_SOURCE_DIR}/lib/SmartPointer/ScopedPointer/SharedPointer.h
 )

@@ -94,9 +94,31 @@ int main(){
 
 	linear.ClearLastOne();
 
-	SmartPointer<ForTest> empty_obj(new ForTest());
-	SmartPointer<ForTest> two_obj(new ForTest(2));
+	ScopedPointer<ForTest> empty_obj(new ForTest());
+	ScopedPointer<ForTest> two_obj(new ForTest(2));
+	if (!empty_obj) std::cout << empty_obj << " \n";
 
-	
+	ForTest arr[3];
+
+	AutoPointer<ForTest> auto_ptr_one(new ForTest[10], 10);
+	AutoPointer<ForTest> auto_ptr_two(new ForTest[5], 5);
+
+	auto_ptr_one = auto_ptr_two;
+	//auto_ptr_one = new ForTest[89];
+
+	//AutoPointer<ForTest> auto_ptr_one[2];
+
+
+	int a;
+	int v[5];
+	void* v_ptr = v;
+	void* a_ptr = &a;
+	int count = 0;
+
+
+	std::cout << sizeof(a) << " \n";
+	std::cout << sizeof(v)/sizeof(int) << " \n";
+	std::cout << sizeof(a_ptr) << " \n";
+	std::cout << sizeof(v_ptr) << " \n";
 	return 0;
 }
