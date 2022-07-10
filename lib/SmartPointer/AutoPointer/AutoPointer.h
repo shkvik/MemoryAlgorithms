@@ -4,7 +4,7 @@
 template<typename Type>
 class AutoPointer 
 {
-	static_assert(!std::is_array<Type>::value);
+	//static_assert(!std::is_array<Type>::value);
 public:
 
 	explicit AutoPointer() = default;

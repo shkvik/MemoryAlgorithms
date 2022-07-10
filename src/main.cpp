@@ -109,7 +109,6 @@ int main(){
 
 	AutoPointer<ForTest[3]> auto_ptr_three(2);
 
-	AutoPointer<ForTest[]> auto_ptr_four(ForTest[2]);
 
 	int a;
 	int v[5];
