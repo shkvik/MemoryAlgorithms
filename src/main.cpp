@@ -1,5 +1,7 @@
 #include <include.h>
 
+
+
 using namespace std;
 
 class ForTest {
@@ -96,18 +98,18 @@ int main(){
 
 	ScopedPointer<ForTest> empty_obj(new ForTest());
 	ScopedPointer<ForTest> two_obj(new ForTest(2));
+
 	if (!empty_obj) std::cout << empty_obj << " \n";
 
-	ForTest arr[3];
-
-	AutoPointer<ForTest> auto_ptr_one(new ForTest[10], 10);
-	AutoPointer<ForTest> auto_ptr_two(new ForTest[5], 5);
+	AutoPointer<ForTest> auto_ptr_one(new ForTest);
+	AutoPointer<ForTest> auto_ptr_two(new ForTest);
 
 	auto_ptr_one = auto_ptr_two;
-	//auto_ptr_one = new ForTest[89];
+	
 
-	//AutoPointer<ForTest> auto_ptr_one[2];
+	AutoPointer<ForTest[3]> auto_ptr_three(2);
 
+	AutoPointer<ForTest[]> auto_ptr_four(ForTest[2]);
 
 	int a;
 	int v[5];
