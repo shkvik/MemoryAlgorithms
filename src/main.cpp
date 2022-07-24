@@ -74,7 +74,7 @@ public:
 
 int main(){
 
-	LinearAllocator<ForTest> linear(4);
+	/*LinearAllocator<ForTest> linear(4);
 	
 	linear.PushOne(ForTest(5));
 	
@@ -100,26 +100,18 @@ int main(){
 	ScopedPointer<ForTest> two_obj(new ForTest(2));
 
 	if (!empty_obj) std::cout << empty_obj << " \n";
-
+	*/
 	AutoPointer<ForTest> auto_ptr_one(new ForTest);
 	AutoPointer<ForTest> auto_ptr_two(new ForTest);
 
 	auto_ptr_one = auto_ptr_two;
-	
-
-	AutoPointer<ForTest[3]> auto_ptr_three(2);
 
 
-	int a;
-	int v[5];
-	void* v_ptr = v;
-	void* a_ptr = &a;
-	int count = 0;
 
+	AutoPointer<ForTest[]> auto_ptr_three(new ForTest[4]);
+	AutoPointer<ForTest[]> auto_ptr_four(auto_ptr_three);
 
-	std::cout << sizeof(a) << " \n";
-	std::cout << sizeof(v)/sizeof(int) << " \n";
-	std::cout << sizeof(a_ptr) << " \n";
-	std::cout << sizeof(v_ptr) << " \n";
+	auto_ptr_three = new ForTest[5];
+
 	return 0;
 }

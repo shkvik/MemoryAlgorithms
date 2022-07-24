@@ -1,58 +1,54 @@
 #pragma once
 #include "AutoPointer.h"
 
+
+
 template<typename Type>
-AutoPointer<Type>::AutoPointer(Type* object) noexcept : My_Object(object) {
+void Handler<Type>::delete_ptr(Type* ptr) {
+	delete ptr;
+}
+
+template<typename Type>
+void Handler<Type[]>::delete_ptr(Type* ptr) {
+	delete[] ptr;
+}
+
+template<typename Type, typename Mode>
+AutoPointer<Type, Mode>::AutoPointer(type* object) noexcept : m_ptr(object) {
 	object = nullptr;
 }
 
-
-template<typename Type>
-AutoPointer<Type>::AutoPointer(AutoPointer<Type>& other) {
-	this->My_Object = other.My_Object;
-	other.My_Object = nullptr;
+template<typename Type, typename Mode>
+AutoPointer<Type, Mode>::AutoPointer(AutoPointer<Type>& other) {
+	this->m_ptr = other.m_ptr;
+	other.m_ptr = nullptr;
 }
 
-template<typename Type>
-AutoPointer<Type>::~AutoPointer() {
-	delete My_Object;
+
+template<typename Type, typename Mode>
+AutoPointer<Type, Mode>::~AutoPointer() {
+	if (m_ptr != nullptr) _handler.delete_ptr(m_ptr);
 }
 
-template<typename Type>
-AutoPointer<Type>& AutoPointer<Type>::operator = (AutoPointer<Type>& other) {
-	delete My_Object;
-	My_Object = other.My_Object;
-	other.My_Object = nullptr;
+template<typename Type, typename Mode>
+AutoPointer<Type>& AutoPointer<Type, Mode>::operator = (AutoPointer<Type>& other) {
+	this->m_ptr = other.m_ptr;
+	other.m_ptr = nullptr;
 	return *this;
 }
 
-template<typename Type>
-AutoPointer<Type>& AutoPointer<Type>::operator = (const Type* object) {
-	delete My_Object;
-	this->My_Object = object;
-	object = nullptr;
+template<typename Type, typename Mode>
+AutoPointer<Type>& AutoPointer<Type, Mode>::operator = (AutoPointer<Type, Mode>::type* object) {
+	_handler.delete_ptr(m_ptr);
+	this->m_ptr = object;
+	object = nullptr;	
 	return *this;
 }
 
 
-template<typename Type>
-Type* AutoPointer<Type>::operator ->() { return this->My_Object; }
-
-
-template<typename Type>
-Type* AutoPointer<Type>::operator *() { return this->*My_Object; }
-
-template<typename Type>
-AutoPointer<Type>::operator bool() { return AutoPointer<Type>::My_Object != nullptr ? true : false; }
-
-
-
-template<typename Type, size_t size>
-AutoPointer<Type[size]>::AutoPointer(int size) noexcept : My_Object(new Type[size]), ArrayCount(size)
-{
-
+template<typename Type, typename Mode>
+AutoPointer<Type, Mode>::operator bool() { 
+	return AutoPointer<Type>::My_Object != nullptr ? true : false;
 }
 
-template<typename Type, size_t size>
-AutoPointer<Type[size]>::~AutoPointer() { if(My_Object != nullptr) delete[] My_Object; }
-	
+
