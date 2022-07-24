@@ -51,4 +51,12 @@ AutoPointer<Type, Mode>::operator bool() {
 	return AutoPointer<Type>::My_Object != nullptr ? true : false;
 }
 
+template<typename Type, typename Mode>
+typename AutoPointer<Type, Mode>::type* AutoPointer<Type, Mode>::operator-> () {
+	return this->m_ptr;
+}
 
+template<typename Type, typename Mode>
+typename AutoPointer<Type, Mode>::type* AutoPointer<Type, Mode>::operator* () {
+	return this->*m_ptr;
+}
