@@ -1,23 +1,43 @@
 #pragma once
+#include <iostream>
 
-template<typename Type>
+namespace scoped_ptr_helper
+{
+	template<typename Type>
+	struct Handler {
+		void delete_ptr(Type* ptr);
+	};
+
+	template<typename Type>
+	struct Handler<Type[]> {
+		void delete_ptr(Type* ptr);
+	};
+
+}
+
+template<typename Type, typename Mode = scoped_ptr_helper::Handler<Type>>
 class ScopedPointer {
+
+	using type = typename std::remove_extent<Type>::type;
+	using handler = Mode;
+
 public:
 
 	explicit ScopedPointer() noexcept = default;
-	explicit ScopedPointer(Type* Object) noexcept;
+	explicit ScopedPointer(type* Object) noexcept;
 	
-	Type* operator ->();
-	Type* operator  *();
+	type* operator ->();
+	type* operator  *();
 		  operator bool();
 
 	~ScopedPointer();
 
 private:
 	
-	ScopedPointer<Type>& operator = (const ScopedPointer<Type>* other);
+	ScopedPointer<Type,Mode>& operator = (const ScopedPointer<Type,Mode>* other);
 	ScopedPointer(const ScopedPointer<Type>& other);
 
-	Type* My_Object = nullptr;
+	handler _handler;
+	type* m_ptr = nullptr;
 
 };

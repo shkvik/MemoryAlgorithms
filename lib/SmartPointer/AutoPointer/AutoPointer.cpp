@@ -4,12 +4,12 @@
 
 
 template<typename Type>
-void Handler<Type>::delete_ptr(Type* ptr) {
+void auto_ptr_helper::Handler<Type>::delete_ptr(Type* ptr) {
 	delete ptr;
 }
 
 template<typename Type>
-void Handler<Type[]>::delete_ptr(Type* ptr) {
+void auto_ptr_helper::Handler<Type[]>::delete_ptr(Type* ptr) {
 	delete[] ptr;
 }
 
