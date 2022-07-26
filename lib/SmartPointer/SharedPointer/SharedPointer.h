@@ -21,9 +21,7 @@ public:
 
 	operator bool();
 
-
 	size_t GetPtrCount() noexcept;
-	
 
 	~SharedPointer();
 
