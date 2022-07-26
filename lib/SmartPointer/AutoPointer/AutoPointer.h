@@ -1,27 +1,13 @@
 #pragma once
 #include <iostream>
+#include "..\ISmartPointer.h"
 
 
-namespace auto_ptr_helper
-{
-	template<typename Type>
-	struct Handler {
-		void delete_ptr(Type* ptr);
-	};
-
-	template<typename Type>
-	struct Handler<Type[]> {
-		void delete_ptr(Type* ptr);
-	};
-
-}
-
-
-template<typename Type, typename Mode = auto_ptr_helper::Handler<Type>>
+template<typename Type, typename Mode = ptr_deleter::Deleter<Type>>
 class AutoPointer 
 {
 	using type = typename std::remove_extent<Type>::type;
-	using handler = Mode;
+	using deleter = Mode;
 
 public:
 
@@ -42,6 +28,6 @@ public:
 private:
 	
 	type* m_ptr = nullptr;
-	handler _handler;
+	deleter _deleter;
 	
 };

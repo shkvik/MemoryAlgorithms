@@ -1,14 +1,24 @@
 #pragma once
 
+namespace ptr_deleter
+{
+	template<typename Type>
+	struct Deleter final {
+		void delete_ptr(Type* ptr);
+	};
+
+	template<typename Type>
+	struct Deleter<Type[]> final {
+		void delete_ptr(Type* ptr);
+	};
+}
+
 template<typename Type>
-class ISmartPointer {
-public:
-	virtual void PushOne(Type type) = 0;
-	virtual void PushArray(Type * type, size_t count) = 0;
-	virtual void ClearLastOne() = 0;
-	virtual void ClearAll() = 0;
-	virtual ~ISmartPointer() {}
-};
+void ptr_deleter::Deleter<Type>::delete_ptr(Type* ptr) {
+	delete ptr;
+}
 
-
-
+template<typename Type>
+void ptr_deleter::Deleter<Type[]>::delete_ptr(Type* ptr) {
+	delete[] ptr;
+}

@@ -3,15 +3,6 @@
 
 
 
-template<typename Type>
-void auto_ptr_helper::Handler<Type>::delete_ptr(Type* ptr) {
-	delete ptr;
-}
-
-template<typename Type>
-void auto_ptr_helper::Handler<Type[]>::delete_ptr(Type* ptr) {
-	delete[] ptr;
-}
 
 template<typename Type, typename Mode>
 AutoPointer<Type, Mode>::AutoPointer(type* object) noexcept : m_ptr(object) {
@@ -27,7 +18,9 @@ AutoPointer<Type, Mode>::AutoPointer(AutoPointer<Type>& other) {
 
 template<typename Type, typename Mode>
 AutoPointer<Type, Mode>::~AutoPointer() {
-	if (m_ptr != nullptr) _handler.delete_ptr(m_ptr);
+	if (m_ptr != nullptr) {
+		_deleter.delete_ptr(m_ptr);
+	}
 }
 
 template<typename Type, typename Mode>
@@ -39,7 +32,7 @@ AutoPointer<Type>& AutoPointer<Type, Mode>::operator = (AutoPointer<Type>& other
 
 template<typename Type, typename Mode>
 AutoPointer<Type>& AutoPointer<Type, Mode>::operator = (AutoPointer<Type, Mode>::type* object) {
-	_handler.delete_ptr(m_ptr);
+	_deleter.delete_ptr(m_ptr);
 	this->m_ptr = object;
 	object = nullptr;	
 	return *this;

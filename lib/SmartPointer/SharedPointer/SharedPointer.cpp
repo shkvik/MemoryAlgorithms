@@ -1,15 +1,6 @@
 #pragma once
 #include "SharedPointer.h"
 
-template<typename Type>
-void shared_ptr_helper::Handler<Type>::delete_ptr(Type* ptr) {
-	delete ptr;
-}
-
-template<typename Type>
-void shared_ptr_helper::Handler<Type[]>::delete_ptr(Type* ptr) {
-	delete[] ptr;
-}
 
 template<typename Type, typename Mode>
 SharedPointer<Type, Mode>::SharedPointer(type* object) noexcept : m_ptr(object) {
@@ -50,9 +41,15 @@ size_t SharedPointer<Type, Mode>::GetPtrCount() {
 
 template<typename Type, typename Mode>
 SharedPointer<Type, Mode>::~SharedPointer() {
-	if (m_ptr != nullptr) {
-		_handler.delete_ptr(m_ptr);
+	SharedPointer<Type, Mode>::ptr_count--;
+	if (ptr_count == 0 && m_ptr != nullptr) {
+		_deleter.delete_ptr(m_ptr);
 	}
+}
+
+template<typename Type, typename Mode>
+SharedPointer<Type, Mode>::operator bool() {
+	return m_ptr == nullptr ? true : false;
 }
 
 template<typename Type, typename Mode>

@@ -1,22 +1,9 @@
 #pragma once 
 #include <iostream>
-
-namespace shared_ptr_helper
-{
-	template<typename Type>
-	struct Handler {
-		void delete_ptr(Type* ptr);
-	};
-
-	template<typename Type>
-	struct Handler<Type[]> {
-		void delete_ptr(Type* ptr);
-	};
-
-}
+#include "..\ISmartPointer.h"
 
 
-template<typename Type, typename Mode = shared_ptr_helper::Handler<Type>>
+template<typename Type, typename Mode = ptr_deleter::Deleter<Type>>
 class SharedPointer {
 
 	using type = typename std::remove_extent<Type>::type;
@@ -43,7 +30,7 @@ public:
 private:
 
 	static int ptr_count = 0;
-	handler _handler;
+	handler _deleter;
 	type* m_ptr = nullptr;
 };
 

@@ -1,15 +1,7 @@
 #pragma once
 #include "ScopedPointer.h"
 
-template<typename Type>
-void scoped_ptr_helper::Handler<Type>::delete_ptr(Type* ptr) {
-	delete ptr;
-}
 
-template<typename Type>
-void scoped_ptr_helper::Handler<Type[]>::delete_ptr(Type* ptr) {
-	delete[] ptr;
-}
 
 template<typename Type, typename Mode>
 ScopedPointer<Type, Mode>::ScopedPointer(type* object) noexcept : m_ptr(object) {
@@ -18,7 +10,9 @@ ScopedPointer<Type, Mode>::ScopedPointer(type* object) noexcept : m_ptr(object) 
 
 template<typename Type, typename Mode>
 ScopedPointer<Type, Mode>::~ScopedPointer() {
-	if(m_ptr != nullptr) _handler.delete_ptr(m_ptr);
+	if (m_ptr != nullptr) {
+		_deleter.delete_ptr(m_ptr);
+	} 
 }
 
 
