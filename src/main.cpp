@@ -7,7 +7,7 @@ using namespace std;
 class ForTest {
 public:
 
-
+	//Hello)
 	ForTest(const ForTest& other) {
 
 		std::cout << "Call copy Constructor" << hisNumber << " \n";
