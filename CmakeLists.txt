@@ -35,4 +35,11 @@ ${CMAKE_SOURCE_DIR}/lib/SmartPointer/AutoPointer/AutoPointer.h
 
 ${CMAKE_SOURCE_DIR}/lib/SmartPointer/SharedPointer/SharedPointer.cpp
 ${CMAKE_SOURCE_DIR}/lib/SmartPointer/SharedPointer/SharedPointer.h
+
+)
+
+add_library(c_vector 
+${CMAKE_SOURCE_DIR}/lib/Container/c_vector/c_vector.h
+${CMAKE_SOURCE_DIR}/lib/Container/c_vector/c_vector.cpp
+
 )
