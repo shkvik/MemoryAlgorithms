@@ -8,7 +8,7 @@ namespace custum {
 		~deleter() = delete;
 		deleter<Type>& deleter(deleter<Type>& other) = delete;
 		
-		void operator ()() noexcept;
+		void operator ()(Type* ptr) noexcept;
 	};
 
 	template<typename Type>
@@ -17,7 +17,7 @@ namespace custum {
 		~deleter() = delete;
 		deleter<Type[]> & deleter(deleter<Type[]>& other) = delete;
 
-		void operator ()() noexcept;
+		void operator ()(Type* ptr) noexcept;
 	};
 
 
@@ -31,17 +31,18 @@ namespace custum {
 	public:
 		vector() = default;
 		explicit vector& vector(vector& other) noexcept;
-		vector& operator = () noexcept;
+
+		vector<Type,mode>& operator = () noexcept;
 
 
-		void push_back() noexcept;
-		void pop_back() noexcept;
+		void push_back(Type* value) noexcept;
+		void pop_back(Type* value) noexcept;
 
 
 	private:
 		~vector() noexcept;
 		del deleter;
-		Type* data;
+		Type* data = nullptr;
 
 	private:
 		size_t m_size;
