@@ -1,26 +1,22 @@
 #pragma once
+#include "c_vector.h"
+#include <iostream>
 
 namespace custum {
 
 	template<typename Type>
 	struct deleter {
-		deleter() = delete;
-		~deleter() = delete;
-		deleter<Type>& deleter(deleter<Type>& other) = delete;
-		
-		void operator ()(Type* ptr) noexcept;
+
+		void operator ()(Type* ptr);
 	};
 
 	template<typename Type>
 	struct deleter<Type[]> {
-		deleter() = delete;
-		~deleter() = delete;
-		deleter<Type[]> & deleter(deleter<Type[]>& other) = delete;
 
-		void operator ()(Type* ptr) noexcept;
+		void operator ()(Type* ptr);
 	};
 
-
+	
 
 	template<typename Type, typename mode = deleter<Type>>
 	class vector {
@@ -30,23 +26,28 @@ namespace custum {
 
 	public:
 		vector() = default;
-		explicit vector& vector(vector& other) noexcept;
+		explicit vector(vector& other) noexcept;
 
-		vector<Type,mode>& operator = () noexcept;
+		vector<Type,mode>& operator = (vector<Type, mode>& other) noexcept;
 
 
-		void push_back(Type* value) noexcept;
-		void pop_back(Type* value) noexcept;
+		type operator [](const size_t number) const;
 
+
+
+		void push_back(type value);
+		void pop_back(type value);
+
+		~vector();
 
 	private:
-		~vector() noexcept;
+		
 		del deleter;
 		Type* data = nullptr;
 
 	private:
-		size_t m_size;
-		size_t m_capacity;
+		size_t m_size = 0;
+		size_t m_capacity = 0;
 
 	};
 

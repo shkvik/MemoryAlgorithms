@@ -1,7 +1,5 @@
 #include <include.h>
 
-
-
 using namespace std;
 
 class ForTest {
@@ -74,6 +72,10 @@ public:
 
 int main(){
 
+	custum::vector<int> c_vector;
+	c_vector.push_back(54);
+	cout << c_vector[0];
+	
 	LinearAllocator<ForTest> linear(4);
 	
 	linear.PushOne(ForTest(5));
